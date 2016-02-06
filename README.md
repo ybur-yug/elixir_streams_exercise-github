@@ -1,7 +1,7 @@
 # Github API
 
 ## Installation
-1. Add `:github_api` to your list of dependencies in `mix.exs`:
+Add `:github_api` to your list of dependencies in `mix.exs`:
 
 ```elixir
 ..
@@ -10,7 +10,7 @@
   end
 ```
 
-2. Ensure `:github_api` is started before your application:
+Ensure `:github_api` is started before your application:
 ```elixir
 ..
   def application do
