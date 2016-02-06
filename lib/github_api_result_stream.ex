@@ -1,7 +1,7 @@
 defmodule GithubAPI.ResultStream do
   alias GithubAPI.Gateway
 
-  @spec new(string()) :: Stream.t
+  @spec new(String.t) :: Stream.t
   def new(url) do
     Stream.resource(
       fn -> fetch_page(url) end,
@@ -9,7 +9,7 @@ defmodule GithubAPI.ResultStream do
       fn _ -> nil end)
   end
 
-  @spec fetch_page(string()) :: tuple()
+  @spec fetch_page(String.t) :: tuple()
   defp fetch_page(url) do
     resp      = Gateway.get!(url)
     items     = Poison.decode!(resp.body)
@@ -23,20 +23,19 @@ defmodule GithubAPI.ResultStream do
   @spec parse_links(nil) :: map()
   def parse_links(nil), do: %{}
 
-  @spec parse_links(string()) :: map()
-  def parse_links(links_str) do
-    links_str
-    |> String.split(links_str, ", ")
+  @spec parse_links(String.t) :: map()
+  def parse_links(links_string) do
+    String.split(links_string, ", ")
     |> Enum.map(fn link ->
-        [_,name] = Regex.run(~r{rel="([a-z]+)"}, link)
-        [_,url] = Regex.run(~r{<([^>]+)>}, link)
-        short_url = String.replace(url, Gateway.endpoint, "")
-        {name, short_url}
-        end)
-     |> Enum.into(%{})
+         [_,name] = Regex.run(~r{rel="([a-z]+)"}, link)
+         [_,url] = Regex.run(~r{<([^>]+)>}, link)
+         short_url = String.replace(url, Gateway.endpoint, "")
+
+         {name, short_url}
+       end)
+    |> Enum.into(%{})
   end
 
-  @spec process_page(tuple()) :: tuple()
   defp process_page({nil, nil}), do: {:halt, nil}
   defp process_page({items, next_page_url}), do: {items, {nil, next_page_url}}
   defp process_page({nil, next_page_url}) do
