@@ -24,9 +24,9 @@ Ensure `:github_api` is started before your application:
 Fire up IEx and give it a whirl:
 
 ```elixir
-iex(1)> organization_repos = GithubAPI.organization_repos("cometaworks")
-iex(2)> do_i_work_at_cometa = GithubAPIis_organization_member?("cometaworks", "ybur-yug")
-iex(3)> cometa_people = GithupAPI.public_members "cometaworks"
+iex(1)> organization_repos = GithubAPI.organization_repos("cometaworks") |> Enum.to_list
+iex(2)> do_i_work_at_cometa = GithubAPIis_organization_member?("cometaworks", "ybur-yug") |> Enum.to_list
+iex(3)> cometa_people = GithupAPI.public_members "cometaworks" |> Enum.to_list
 ```
 
 Currently, only repos are supported for listing on the top level API
