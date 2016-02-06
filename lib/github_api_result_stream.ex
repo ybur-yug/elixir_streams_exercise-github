@@ -1,4 +1,4 @@
-defmodule Github.ResultStream do
+defmodule GithubAPI.ResultStream do
   alias GithubAPI.Gateway
 
   @spec new(string()) :: Stream.t
@@ -11,11 +11,13 @@ defmodule Github.ResultStream do
 
   @spec fetch_page(string()) :: tuple()
   defp fetch_page(url) do
-    resp  = Gateway.get!(url)
-    items = Poison.decode!(resp.body)
-    links = parse_links(resp.headers["Link"])
-
-    {items, links["next"]}
+    resp      = Gateway.get!(url)
+    items     = Poison.decode!(resp.body)
+    links_map = resp.headers
+                |> List.keyfind("Link", 0, {nil, nil})
+                |> elem(1)
+                |> parse_links
+    {items, links_map["next"]}
   end
 
   @spec parse_links(nil) :: map()
