@@ -1,0 +1,2 @@
+defmodule GithubAPI do
+end
