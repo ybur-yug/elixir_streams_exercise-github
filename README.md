@@ -24,11 +24,9 @@ Ensure `:github_api` is started before your application:
 Fire up IEx and give it a whirl:
 
 ```elixir
-iex(1)> repo_stream = "nodejs"
-|> GithubAPI.repos
-|> Stream.map(fn repo_map -> {repo_map["full_name"], repo_map["forks"]} end)
-|> Enum.take(4)
-# => [{"nodejs/http-parser", 649}, {"nodejs/node-v0.x-archive", 8497}, {"nodejs/node-gyp", 354}, {"nodejs/readable-stream", 67}]
+iex(1)> organization_repos = GithubAPI.organization_repos("cometaworks")
+iex(2)> do_i_work_at_cometa = GithubAPIis_organization_member?("cometaworks", "ybur-yug")
+iex(3)> cometa_people = GithupAPI.public_members "cometaworks"
 ```
 
 Currently, only repos are supported for listing on the top level API
